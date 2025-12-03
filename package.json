@@ -1,0 +1,17 @@
+{
+  "name": "virtual-try-on",
+  "version": "1.0.0",
+  "description": "Virtual Try-On Application",
+  "scripts": {
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install",
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "prettier": "^3.7.3"
+  }
+}
