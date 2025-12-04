@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "nodemon --exec tsx src/index.ts",
     "build": "tsc",
     "start": "tsx src/index.ts",
     "test": "vitest",
