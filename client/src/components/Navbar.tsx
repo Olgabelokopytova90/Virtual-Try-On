@@ -1,4 +1,5 @@
 import React from 'react';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 
 const Navbar: React.FC = () => {
   return (
@@ -6,18 +7,7 @@ const Navbar: React.FC = () => {
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16" />
-            </svg>
+            <Bars3Icon className="h-5 w-5" />
           </div>
           <ul
             tabIndex={0}
@@ -29,14 +19,15 @@ const Navbar: React.FC = () => {
         <a className="btn btn-ghost text-xl">Virtual Try-On</a>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li><a>Home</a></li>
-          <li><a>Gallery</a></li>
+        <ul className="menu menu-horizontal px-1 gap-4">
+          <li><a className="text-lg">Home</a></li>
+          <li><a className="text-lg">Gallery</a></li>
         </ul>
+      </div>
+      <div className="navbar-end">
       </div>
     </div>
   );
 };
 
 export default Navbar;
-
