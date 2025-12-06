@@ -33,7 +33,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// POST /api/upload/:type
-router.post("/api/upload/:type", upload.single("image"), uploadImageController);
+// POST /upload/:type
+router.post("/upload/:type", upload.single("image"), uploadImageController);
 
 export default router;
