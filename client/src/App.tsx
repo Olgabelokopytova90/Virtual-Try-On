@@ -49,10 +49,12 @@ function App() {
 
   const handleCloseModal = () => {
     setProcessingStep('idle');
-    // Optionally redirect or show result here
-    if (currentSession) {
-        console.log('Viewing session:', currentSession.id);
-    }
+  }
+
+  const getImageUrl = (url: string) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    return `http://localhost:3000${url}`
   }
 
   return (
@@ -66,7 +68,20 @@ function App() {
       />
 
       <div className="flex flex-col items-center justify-center p-4 min-h-[calc(100vh-64px)] gap-8">
-        <div className="text-center max-w-2xl">
+        {currentSession && currentSession.resultImageUrl ? (
+          <>
+          <h2>Your Result</h2>
+          <img 
+          src={getImageUrl(currentSession.resultImageUrl)} 
+          alt="Virtual Try On Result"
+          className='w-full h-auto object-cover' 
+          />
+          </>
+
+        ): (
+          <>
+
+                  <div className="text-center max-w-2xl">
           <h1 className="text-4xl font-bold text-primary mb-4">
             Virtual Try-On
           </h1>
@@ -91,6 +106,8 @@ function App() {
             Try On Now
           </button>
         </div>
+        </>
+        )}
       </div>
     </div>
   )
