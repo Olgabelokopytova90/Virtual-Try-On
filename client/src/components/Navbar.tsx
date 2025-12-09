@@ -1,7 +1,15 @@
 import React from 'react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  onNavigate: (view: 'home' | 'gallery') => void;
+  currentView: 'home' | 'gallery';
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
+  const getLinkClass = (view: 'home' | 'gallery') => 
+    `text-lg cursor-pointer ${currentView === view ? 'font-bold text-primary' : ''}`;
+
   return (
     <div className="navbar bg-base-100 shadow-lg">
       <div className="navbar-start">
@@ -12,16 +20,16 @@ const Navbar: React.FC = () => {
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52">
-            <li><a>Home</a></li>
-            <li><a>Gallery</a></li>
+            <li><a onClick={() => onNavigate('home')} className={currentView === 'home' ? 'active' : ''}>Home</a></li>
+            <li><a onClick={() => onNavigate('gallery')} className={currentView === 'gallery' ? 'active' : ''}>Gallery</a></li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Virtual Try-On</a>
+        <a className="btn btn-ghost text-xl" onClick={() => onNavigate('home')}>Virtual Try-On</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 gap-4">
-          <li><a className="text-lg">Home</a></li>
-          <li><a className="text-lg">Gallery</a></li>
+          <li><a onClick={() => onNavigate('home')} className={getLinkClass('home')}>Home</a></li>
+          <li><a onClick={() => onNavigate('gallery')} className={getLinkClass('gallery')}>Gallery</a></li>
         </ul>
       </div>
       <div className="navbar-end">
