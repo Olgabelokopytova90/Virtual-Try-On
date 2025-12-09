@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createTryOnSession, getTryOnSessionById } from "../controllers/tryOnController.js";
+import { createTryOnSession, getTryOnSessionById, getAllTryOnSessions } from "../controllers/tryOnController.js";
 
 export const tryOnRouter = Router();
 
@@ -7,4 +7,7 @@ export const tryOnRouter = Router();
 tryOnRouter.post('/', createTryOnSession);
 
 //get one session
-tryOnRouter.get('/:id', getTryOnSessionById)
+tryOnRouter.get('/:id', getTryOnSessionById);
+
+//get all sessions
+tryOnRouter.get('/', getAllTryOnSessions)
