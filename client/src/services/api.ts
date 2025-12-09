@@ -37,3 +37,13 @@ export const createTryOnSession = async (userImageUrl: string, clothingImageUrl:
 
   return response.json();
 };
+
+export const getAllSessions = async () => {
+  const response = await fetch(`${API_BASE_URL}/try-on`);
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch sessions');
+  }
+
+  return response.json();
+};

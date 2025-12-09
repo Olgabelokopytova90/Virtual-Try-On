@@ -68,6 +68,7 @@ export const createTryOnSession = async (req: Request, res: Response, next: Next
             fs.writeFileSync(resultPath, Buffer.from(result.data, 'base64'))
 
             newSession.resultImageUrl = `/uploads/others/${resultFilename}`
+            newSession.status = 'completed'
         }else if(result.type === 'text'){
             console.log("Gemini returned text instead of image:", result.text)
             newSession.status = "failed"
@@ -86,6 +87,17 @@ export const createTryOnSession = async (req: Request, res: Response, next: Next
           
     } catch(err) {
         return next(err)
+    }
+};
+
+//GET /api/try-on
+export const getAllTryOnSessions = (_req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Filter sessions that have a result image
+        const completedSessions = tryOnSessions.filter(session => session.status === 'completed' || session.resultImageUrl);
+        return res.status(200).json(completedSessions);
+    } catch (error) {
+        return next(error);
     }
 };
 

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "KYUD5tyLvyAjo4UgGTmuK",
+    "userImageUrl": "",
+    "clothingImageUrl": [],
+    "resultImageUrl": "/uploads/others/result-KYUD5tyLvyAjo4UgGTmuK.png",
+    "status": "completed"
+  },
+  {
+    "id": "VW5nt4eujgsBD9ESBCS5F",
+    "userImageUrl": "",
+    "clothingImageUrl": [],
+    "resultImageUrl": "/uploads/others/result-VW5nt4eujgsBD9ESBCS5F.png",
+    "status": "completed"
+  },
+  {
+    "id": "lkFJziVe1EPmcZFZTN821",
+    "userImageUrl": "",
+    "clothingImageUrl": [],
+    "resultImageUrl": "/uploads/others/result-lkFJziVe1EPmcZFZTN821.png",
+    "status": "completed"
+  },
+  {
+    "id": "kwg379DPUeG9NQnDFJpzn",
+    "userImageUrl": "/uploads/users/1765249100454-me.jpg",
+    "clothingImageUrl": [
+      "/uploads/clothing/1765249100459-blue-shirt.png"
+    ],
+    "resultImageUrl": null,
+    "status": "pending"
+  }
+]
