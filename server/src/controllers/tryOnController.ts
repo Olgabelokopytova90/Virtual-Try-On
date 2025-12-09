@@ -121,13 +121,3 @@ export const getTryOnSessionById = (req: Request, res: Response, next: NextFunct
     }
 };
 
-export const getAllTryOnSessions = (req: Request, res: Response, next: NextFunction) => {
-try {
-    const complited = tryOnSessions.filter((ses) => ses.userImageUrl !== null);
-
-    return res.status(200).json(complited)
-
-} catch (error) {
-    return next(error)
-}
-}
