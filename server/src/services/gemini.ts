@@ -18,9 +18,6 @@ const getMimeType = (filetype: string) => {
     return 'image/jpeg'
 }
 
-
-
-
 export const generateTryOn = async (userImagePath: string, clothingImagePaths: string[]) => {
 
 
@@ -48,13 +45,6 @@ export const generateTryOn = async (userImagePath: string, clothingImagePaths: s
             }
         }
     })
-
-    // create prompt using userImagePart and clothingParts
-    // const prompt = [
-    //     { text: "Take this user image and put this piece of clothing on to their body" },
-    //     {userImagePart},
-    //     {...clothingParts},
-    // ];
 
     try {
         const response = await ai.models.generateContent({
@@ -94,71 +84,5 @@ export const generateTryOn = async (userImagePath: string, clothingImagePaths: s
         console.error("Gemini API error:", err)
         throw err;
     }
-
 }
 
-/*
-  const imageData1 = fs.readFileSync("girl.png");
-  const base64Image1 = imageData1.toString("base64");
-  
-  const imageData2 = fs.readFileSync("tshirt.png");
-  const base64Image2 = imageData2.toString("base64");
-
-  const prompt = [
-    { text: "Make the girl wear this t-shirt. Leave the background unchanged." },
-    {
-      inlineData: {
-        mimeType: "image/png",
-        data: base64Image1,
-      },
-    },
-    {
-      inlineData: {
-        mimeType: "image/png",
-        data: base64Image2,
-      },
-    },
-  ];
-*/
-
-
-
-// import { GoogleGenAI } from "@google/genai";
-// import * as fs from "node:fs";
-
-// async function main() {
-
-//   const ai = new GoogleGenAI({});
-
-//   const imagePath = "path/to/cat_image.png";
-//   const imageData = fs.readFileSync(imagePath);
-//   const base64Image = imageData.toString("base64");
-
-//   const prompt = [
-//     { text: "Create a picture of my cat eating a nano-banana in a" +
-//             "fancy restaurant under the Gemini constellation" },
-//     {
-//       inlineData: {
-//         mimeType: "image/png",
-//         data: base64Image,
-//       },
-//     },
-//   ];
-
-//   const response = await ai.models.generateContent({
-//     model: "gemini-2.5-flash-image",
-//     contents: prompt,
-//   });
-//   for (const part of response.candidates[0].content.parts) {
-//     if (part.text) {
-//       console.log(part.text);
-//     } else if (part.inlineData) {
-//       const imageData = part.inlineData.data;
-//       const buffer = Buffer.from(imageData, "base64");
-//       fs.writeFileSync("gemini-native-image.png", buffer);
-//       console.log("Image saved as gemini-native-image.png");
-//     }
-//   }
-// }
-
-// main();
