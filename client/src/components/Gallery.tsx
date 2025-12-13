@@ -8,8 +8,10 @@ interface ClothingItem {
 
 interface Session {
   id: string;
-  userImageUrl: string;
-  clothingImageUrl: (string | ClothingItem)[];
+  userImageUrl?: string;
+  originUserImageUrl?: string; // Add support for new backend property
+  clothingImageUrl?: (string | ClothingItem)[];
+  selectedItems?: (string | ClothingItem)[]; // Add support for new backend property
   resultImageUrl: string | null;
   status: string;
 }
@@ -70,7 +72,11 @@ const Gallery: React.FC = () => {
     <div className="container mx-auto p-4">
       <h2 className="text-3xl font-bold mb-6 text-center">Gallery</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sessions.map((session) => (
+        {sessions.map((session) => {
+            const userImg = session.userImageUrl || session.originUserImageUrl;
+            const clothingItems = session.clothingImageUrl || session.selectedItems || [];
+            
+            return (
           <div key={session.id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
             <figure className="aspect-3/4 overflow-hidden relative group">
               {session.resultImageUrl ? (
@@ -96,8 +102,12 @@ const Gallery: React.FC = () => {
                  <div className="flex items-center gap-2 mt-2">
                     {/* User image on the left */}
                     <div className="avatar">
-                        <div className="w-16 h-16 rounded">
-                            <img src={getImageUrl(session.userImageUrl)} alt="User" />
+                        <div className="w-16 h-16 rounded bg-base-200 flex items-center justify-center overflow-hidden">
+                            {userImg ? (
+                                <img src={getImageUrl(userImg)} alt="User" />
+                            ) : (
+                                <span className="text-xs text-base-content/30">No Img</span>
+                            )}
                         </div>
                     </div>
                     
@@ -105,13 +115,17 @@ const Gallery: React.FC = () => {
                     <div className="divider divider-vertical h-full m-0 min-h-12 border-l border-green-300/80"></div>
                     
                     {/* Clothing items on the right */}
-                    <div className="flex gap-2 flex-1">
-                     {session.clothingImageUrl.map((url, idx) => {
+                    <div className="flex gap-2 flex-1 flex-wrap">
+                     {clothingItems.map((url, idx) => {
                         const imageUrl = typeof url === 'string' ? url : url.imageUrl;
                         return (
                             <div key={idx} className="avatar">
-                                <div className="w-16 h-16 rounded">
-                                    <img src={getImageUrl(imageUrl)} alt="Clothing" />
+                                <div className="w-16 h-16 rounded bg-base-200 flex items-center justify-center overflow-hidden">
+                                    {imageUrl ? (
+                                        <img src={getImageUrl(imageUrl)} alt="Clothing" />
+                                    ) : (
+                                        <span className="text-xs text-base-content/30">No Img</span>
+                                    )}
                                 </div>
                             </div>
                         );
@@ -120,7 +134,7 @@ const Gallery: React.FC = () => {
                  </div>
             </div>
           </div>
-        ))}
+        )})}
       </div>
     </div>
   );
