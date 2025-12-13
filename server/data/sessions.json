@@ -61,5 +61,32 @@
     ],
     "resultImageUrl": "/uploads/others/result-ShVq8982OCMEJrIV9TZsQ.png",
     "status": "completed"
+  },
+  {
+    "id": "k0AukO9_dUcjMtVuIEqV4",
+    "originUserImageUrl": "/uploads/users/1765646924106-stock-model.jpg",
+    "selectedItems": [
+      "/uploads/clothing/1765646924115-cat-shirt.jpeg"
+    ],
+    "resultImageUrl": "/uploads/others/result-k0AukO9_dUcjMtVuIEqV4.png",
+    "status": "completed"
+  },
+  {
+    "id": "8PHAN-AcITDatAv1T-yif",
+    "originUserImageUrl": "/uploads/users/1765646924106-stock-model.jpg",
+    "selectedItems": [
+      "/uploads/clothing/1765647524966-Men_s_Cargo_Black_Realxed_Fit__Januray_2024__Front.webp"
+    ],
+    "resultImageUrl": "/uploads/others/result-8PHAN-AcITDatAv1T-yif.png",
+    "status": "completed"
+  },
+  {
+    "id": "RHM_bX2MZw4SyfOLMyiik",
+    "originUserImageUrl": "/uploads/users/1765648610361-DSC06343.jpg",
+    "selectedItems": [
+      "/uploads/clothing/1765648610537-knicks-shorts.jpg"
+    ],
+    "resultImageUrl": "/uploads/others/result-RHM_bX2MZw4SyfOLMyiik.png",
+    "status": "completed"
   }
 ]

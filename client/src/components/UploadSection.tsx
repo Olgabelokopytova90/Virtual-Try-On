@@ -6,6 +6,7 @@ interface UploadSectionProps {
   clothingPhoto: File | null;
   setUserPhoto: (file: File | null) => void;
   setClothingPhoto: (file: File | null) => void;
+  onClearExistingUserPhoto?: () => void;
 }
 
 const UploadSection: React.FC<UploadSectionProps> = ({
@@ -14,6 +15,7 @@ const UploadSection: React.FC<UploadSectionProps> = ({
   clothingPhoto,
   setUserPhoto,
   setClothingPhoto,
+  onClearExistingUserPhoto,
 }) => {
   
   const handleFileChange = (
@@ -70,7 +72,18 @@ const UploadSection: React.FC<UploadSectionProps> = ({
                 alt="Previous User preview" 
                 className="w-full h-full object-contain bg-base-200"
               />
-              <div className="absolute top-2 right-2 badge badge-info">Using previous</div>
+              <div className="absolute top-2 right-2 flex gap-1">
+                <div className="badge badge-info">Using previous</div>
+                {onClearExistingUserPhoto && (
+                  <button 
+                    className="btn btn-circle btn-xs btn-error"
+                    onClick={onClearExistingUserPhoto}
+                    aria-label="Remove previous user photo"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
             </div>
           ) : (
             <div className="mt-4 w-full h-64 rounded-lg border-2 border-dashed border-base-300 flex items-center justify-center bg-base-200 text-base-content/30">

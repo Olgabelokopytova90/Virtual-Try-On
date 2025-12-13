@@ -99,16 +99,31 @@ function App() {
                   />
                </figure>
             </div>
-            <button 
-              className="btn btn-outline btn-primary"
-              onClick={() => {
-                setCurrentSession(null);
-                setUserPhoto(null);
-                setClothingPhoto(null);
-              }}
-            >
-              Try Another Outfit
-            </button>
+            <div className="flex gap-4">
+              <button 
+                className="btn btn-outline btn-primary"
+                onClick={() => {
+                  setCurrentSession(null);
+                  setUserPhoto(null);
+                  setClothingPhoto(null);
+                }}
+              >
+                Try Another Outfit
+              </button>
+              <button 
+                className="btn btn-primary"
+                onClick={() => {
+                  if (currentSession?.resultImageUrl) {
+                    setExistingUserPhotoUrl(currentSession.resultImageUrl);
+                    setUserPhoto(null);
+                    setClothingPhoto(null);
+                    setCurrentSession(null);
+                  }
+                }}
+              >
+                Use this look for next try-on
+              </button>
+            </div>
           </div>
 
         ): (
@@ -129,6 +144,7 @@ function App() {
             clothingPhoto={clothingPhoto}
             setUserPhoto={setUserPhoto}
             setClothingPhoto={setClothingPhoto}
+            onClearExistingUserPhoto={() => setExistingUserPhotoUrl(null)}
           />
 
           <div className="flex justify-center w-full">
