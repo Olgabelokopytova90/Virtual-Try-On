@@ -25,10 +25,12 @@ export const createTryOnSession = async (req: Request, res: Response, next: Next
      // Create a unique ID for this try-on session.
     const id = createSessionId();
 
+
+
     const newSession: TryOnSession = {
         id,
-        userImageUrl,
-        clothingImageUrl,
+        originUserImageUrl: userImageUrl,
+        selectedItems: clothingImageUrl,
         resultImageUrl: null, // No result image yet.
         status: 'pending'   // Session is not processed yet. 
     };
@@ -45,8 +47,8 @@ export const createTryOnSession = async (req: Request, res: Response, next: Next
 
     // Process images in background
     try{
-        const userPath = toLocalPath(userImageUrl);
-        const clothingPaths = clothingImageUrl.map((item: any) => {
+        const userPath = toLocalPath(newSession.originUserImageUrl);
+        const clothingPaths = newSession.selectedItems.map((item: any) => {
 
             if (typeof item === 'string') {
                  return toLocalPath(item);
@@ -100,6 +102,61 @@ export const getAllTryOnSessions = (_req: Request, res: Response, next: NextFunc
         return next(error);
     }
 };
+
+//api/try-on/:id/continue
+
+export const continueTryOnSession = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const { clothingImageUrl } = req.body;
+
+    const session = tryOnSessions.find(s => s.id === id);
+    if (!session) return res.status(404).json({ error: 'Session not found' });
+
+    if (!Array.isArray(clothingImageUrl) || clothingImageUrl.length === 0) {
+      return res.status(400).json({ error: 'clothingImageUrl array is required' });
+    }
+
+    const normalizedNewItems = clothingImageUrl.map((item: any) => {
+      if (typeof item === 'string') return { imageUrl: item, category: 'top' };
+      return { imageUrl: item.imageUrl, category: item.category ?? 'top' };
+    });
+
+    session.selectedItems = [...session.selectedItems, ...normalizedNewItems];
+    session.status = 'processing';
+
+    const toLocalPath = (url: string) => {
+      if (!url) return '';
+      const cleanUrl = url.startsWith('/') ? url.slice(1) : url;
+      return path.join(process.cwd(), cleanUrl);
+    };
+
+    try {
+      const userPath = toLocalPath(session.originUserImageUrl);
+      const clothingPaths = session.selectedItems.map(item => toLocalPath(item.imageUrl));
+
+      const result: any = await generateTryOn(userPath, clothingPaths);
+
+      if (result.type === 'image' && result.data) {
+        const resultFilename = `result-${id}-${Date.now()}.png`;
+        const resultPath = path.join(process.cwd(), 'uploads', 'others', resultFilename);
+        fs.writeFileSync(resultPath, Buffer.from(result.data, 'base64'));
+
+        session.resultImageUrl = `/uploads/others/${resultFilename}`;
+        session.status = 'completed';
+      } else {
+        session.status = 'failed';
+      }
+    } catch (error) {
+      console.error('Failed to process continue try-on', error);
+      session.status = 'failed';
+    }
+
+    return res.status(200).json(session);
+  } catch (error) {
+    return next(error);
+  }
+}
 
 //GET /api/try-on/:id
 
