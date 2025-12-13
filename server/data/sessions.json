@@ -43,5 +43,23 @@
     ],
     "resultImageUrl": "/uploads/others/result-WShXhx5PRg0m5cf5tqzpj.png",
     "status": "completed"
+  },
+  {
+    "id": "IaBCETlJVh4FJMcoIHJ0a",
+    "originUserImageUrl": "/uploads/users/1765591930057-me.jpg",
+    "selectedItems": [
+      "/uploads/clothing/1765591930093-Men_s_Cargo_Black_Realxed_Fit__Januray_2024__Front.webp"
+    ],
+    "resultImageUrl": "/uploads/others/result-IaBCETlJVh4FJMcoIHJ0a.png",
+    "status": "completed"
+  },
+  {
+    "id": "ShVq8982OCMEJrIV9TZsQ",
+    "originUserImageUrl": "/uploads/users/1765593452625-me.jpg",
+    "selectedItems": [
+      "/uploads/clothing/1765593452648-cat-shirt.jpeg"
+    ],
+    "resultImageUrl": "/uploads/others/result-ShVq8982OCMEJrIV9TZsQ.png",
+    "status": "completed"
   }
 ]

@@ -3,7 +3,7 @@ import Navbar from './components/Navbar'
 import UploadSection from './components/UploadSection'
 import ProcessingModal, { type ProcessingStep } from './components/ProcessingModal'
 import Gallery from './components/Gallery'
-import { uploadImage, createTryOnSession } from './services/api'
+import { uploadImage, createTryOnSession, continueTryOnSession } from './services/api'
 
 function App() {
   const [view, setView] = useState<'home' | 'gallery'>('home')
@@ -28,6 +28,9 @@ function App() {
       if (userPhoto) {
           userImageUrl = await uploadImage(userPhoto, 'user');
           setExistingUserPhotoUrl(userImageUrl); // Save for next time
+          // If we upload a NEW user photo, we must start a new session.
+          // Resetting currentSession to null to ensure we don't try to continue an old one.
+          setCurrentSession(null); 
       }
 
       if (!userImageUrl) throw new Error("No user image available");
@@ -36,8 +39,15 @@ function App() {
       
       setProcessingStep('processing');
       
-      // 2. Create Try-On Session
-      const session = await createTryOnSession(userImageUrl, [clothingImageUrl]);
+      let session;
+      // 2. Decide: Create NEW Session OR Continue EXISTING Session
+      // If we have a currentSession AND we are reusing the photo (no new userPhoto uploaded), we can continue.
+      if (currentSession && !userPhoto) {
+         session = await continueTryOnSession(currentSession.id, [clothingImageUrl]);
+      } else {
+         session = await createTryOnSession(userImageUrl, [clothingImageUrl]);
+      }
+
       setCurrentSession(session);
 
       setProcessingStep('success');

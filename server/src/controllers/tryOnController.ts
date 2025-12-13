@@ -130,6 +130,7 @@ export const continueTryOnSession = async (req: Request, res: Response, next: Ne
 
     session.selectedItems = [...session.selectedItems, ...normalizedNewItems];
     session.status = 'processing';
+    saveSessions(); // Save updated session state
 
     const toLocalPath = (url: string) => {
       if (!url) return '';
@@ -150,12 +151,15 @@ export const continueTryOnSession = async (req: Request, res: Response, next: Ne
 
         session.resultImageUrl = `/uploads/others/${resultFilename}`;
         session.status = 'completed';
+        saveSessions();
       } else {
         session.status = 'failed';
+        saveSessions();
       }
     } catch (error) {
       console.error('Failed to process continue try-on', error);
       session.status = 'failed';
+      saveSessions();
     }
 
     return res.status(200).json(session);
