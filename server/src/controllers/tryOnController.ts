@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-//import in-memory array and fn to create unique id
-import { tryOnSessions, createSessionId } from "../data/tryOnSessions.js";
+// Import saveSessions helper
+import { tryOnSessions, createSessionId, saveSessions } from "../data/tryOnSessions.js";
 import type { TryOnSession } from "../types/types.js";
 import path from "path";
 import fs from 'fs'
@@ -8,8 +8,10 @@ import { generateTryOn } from "../services/gemini.js";
 import { ApiError } from "@google/genai";
 
 
+
 //POST /api/try-on
 export const createTryOnSession = async (req: Request, res: Response, next: NextFunction) => {
+
 
     try{
 
@@ -34,7 +36,7 @@ export const createTryOnSession = async (req: Request, res: Response, next: Next
     };
 
     tryOnSessions.push(newSession);
-
+    saveSessions(); // Save immediately so we don't lose the pending session
 
     // Convert URLs to local paths for the service
     const toLocalPath = (url: string) => {
@@ -69,17 +71,21 @@ export const createTryOnSession = async (req: Request, res: Response, next: Next
 
             newSession.resultImageUrl = `/uploads/others/${resultFilename}`
             newSession.status = 'completed'
+            saveSessions(); // Save on success
         }else if(result.type === 'text'){
             console.log("Gemini returned text instead of image:", result.text)
             newSession.status = "failed"
+            saveSessions(); // Save on failure
         }else{
             console.log("Unknown response type from Gemini")
             newSession.status = "failed"
+            saveSessions(); // Save on failure
         }
 
     }catch(apiError){
         console.error("Failed to process try-on", apiError)
         newSession.status = "failed"
+        saveSessions(); // Save on error
     }
 
 // Save this session into our "database" array

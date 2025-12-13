@@ -8,6 +8,7 @@ import { uploadImage, createTryOnSession } from './services/api'
 function App() {
   const [view, setView] = useState<'home' | 'gallery'>('home')
   const [userPhoto, setUserPhoto] = useState<File | null>(null)
+  const [existingUserPhotoUrl, setExistingUserPhotoUrl] = useState<string | null>(null)
   const [clothingPhoto, setClothingPhoto] = useState<File | null>(null)
   const [processingStep, setProcessingStep] = useState<ProcessingStep>('idle')
   const [error, setError] = useState<string | undefined>()
@@ -15,17 +16,23 @@ function App() {
   const [currentSession, setCurrentSession] = useState<any>(null)
 
   const handleTryOn = async () => {
-    if (!userPhoto || !clothingPhoto) return;
+    if ((!userPhoto && !existingUserPhotoUrl) || !clothingPhoto) return;
     
     setProcessingStep('uploading');
     setError(undefined);
 
     try {
       // 1. Upload Photos
-      const [userImageUrl, clothingImageUrl] = await Promise.all([
-        uploadImage(userPhoto, 'user'),
-        uploadImage(clothingPhoto, 'clothing')
-      ]);
+      let userImageUrl = existingUserPhotoUrl;
+      
+      if (userPhoto) {
+          userImageUrl = await uploadImage(userPhoto, 'user');
+          setExistingUserPhotoUrl(userImageUrl); // Save for next time
+      }
+
+      if (!userImageUrl) throw new Error("No user image available");
+
+      const clothingImageUrl = await uploadImage(clothingPhoto, 'clothing');
       
       setProcessingStep('processing');
       
@@ -33,9 +40,6 @@ function App() {
       const session = await createTryOnSession(userImageUrl, [clothingImageUrl]);
       setCurrentSession(session);
 
-      // Simulate processing delay since Gemini is not connected yet
-      // await new Promise(resolve => setTimeout(resolve, 2000));
-      
       setProcessingStep('success');
       
     } catch (error) {
@@ -111,6 +115,7 @@ function App() {
         
           <UploadSection 
             userPhoto={userPhoto}
+            existingUserPhotoUrl={existingUserPhotoUrl}
             clothingPhoto={clothingPhoto}
             setUserPhoto={setUserPhoto}
             setClothingPhoto={setClothingPhoto}
@@ -120,7 +125,7 @@ function App() {
             <button 
               className="btn btn-primary btn-lg px-12"
               onClick={handleTryOn}
-              disabled={!userPhoto || !clothingPhoto || processingStep !== 'idle'}
+              disabled={(!userPhoto && !existingUserPhotoUrl) || !clothingPhoto || processingStep !== 'idle'}
             >
               Try On Now
             </button>

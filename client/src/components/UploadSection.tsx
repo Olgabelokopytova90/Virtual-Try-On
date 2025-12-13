@@ -2,6 +2,7 @@ import React, { type ChangeEvent } from 'react';
 
 interface UploadSectionProps {
   userPhoto: File | null;
+  existingUserPhotoUrl?: string | null;
   clothingPhoto: File | null;
   setUserPhoto: (file: File | null) => void;
   setClothingPhoto: (file: File | null) => void;
@@ -9,6 +10,7 @@ interface UploadSectionProps {
 
 const UploadSection: React.FC<UploadSectionProps> = ({
   userPhoto,
+  existingUserPhotoUrl,
   clothingPhoto,
   setUserPhoto,
   setClothingPhoto,
@@ -21,6 +23,12 @@ const UploadSection: React.FC<UploadSectionProps> = ({
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
     }
+  };
+
+  const getImageUrl = (url: string) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    return `http://localhost:3000${url}`;
   };
 
   return (
@@ -54,6 +62,15 @@ const UploadSection: React.FC<UploadSectionProps> = ({
               >
                 ✕
               </button>
+            </div>
+          ) : existingUserPhotoUrl ? (
+             <div className="mt-4 relative w-full h-64 rounded-lg overflow-hidden border border-base-300">
+              <img 
+                src={getImageUrl(existingUserPhotoUrl)} 
+                alt="Previous User preview" 
+                className="w-full h-full object-contain bg-base-200"
+              />
+              <div className="absolute top-2 right-2 badge badge-info">Using previous</div>
             </div>
           ) : (
             <div className="mt-4 w-full h-64 rounded-lg border-2 border-dashed border-base-300 flex items-center justify-center bg-base-200 text-base-content/30">

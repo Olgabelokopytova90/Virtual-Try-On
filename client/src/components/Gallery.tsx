@@ -96,8 +96,12 @@ const Gallery: React.FC = () => {
                  <div className="flex items-center gap-2 mt-2">
                     {/* User image on the left */}
                     <div className="avatar">
-                        <div className="w-16 h-16 rounded">
-                            <img src={getImageUrl(session.userImageUrl)} alt="User" />
+                        <div className="w-16 h-16 rounded bg-base-200 flex items-center justify-center overflow-hidden">
+                            {session.userImageUrl ? (
+                                <img src={getImageUrl(session.userImageUrl)} alt="User" />
+                            ) : (
+                                <span className="text-xs text-base-content/30">No Img</span>
+                            )}
                         </div>
                     </div>
                     
@@ -105,13 +109,17 @@ const Gallery: React.FC = () => {
                     <div className="divider divider-vertical h-full m-0 min-h-12 border-l border-green-300/80"></div>
                     
                     {/* Clothing items on the right */}
-                    <div className="flex gap-2 flex-1">
+                    <div className="flex gap-2 flex-1 flex-wrap">
                      {session.clothingImageUrl.map((url, idx) => {
                         const imageUrl = typeof url === 'string' ? url : url.imageUrl;
                         return (
                             <div key={idx} className="avatar">
-                                <div className="w-16 h-16 rounded">
-                                    <img src={getImageUrl(imageUrl)} alt="Clothing" />
+                                <div className="w-16 h-16 rounded bg-base-200 flex items-center justify-center overflow-hidden">
+                                    {imageUrl ? (
+                                        <img src={getImageUrl(imageUrl)} alt="Clothing" />
+                                    ) : (
+                                        <span className="text-xs text-base-content/30">No Img</span>
+                                    )}
                                 </div>
                             </div>
                         );
