@@ -6,8 +6,8 @@ type ClothingItem = {
 }
 export interface TryOnSession {
     id: string,
-    userImageUrl: string,
-    clothingImageUrl: ClothingItem[],
+    originUserImageUrl: string,
+    selectedItems: ClothingItem[],
     resultImageUrl?: string | null,
     status: TryOnStatus
 }
